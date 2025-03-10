@@ -21,7 +21,7 @@ namespace Ember {
 	private:
 		int m_Width;
 		int m_Height;
-	}
+	};
 
 	class EM_API WindowMoveEvent : public Event {
 	public:
@@ -35,7 +35,7 @@ namespace Ember {
 	private:
 		int m_X;
 		int m_Y;
-	}
+	};
 
 	class EM_API WindowFocus : public Event {
 	public:
@@ -43,12 +43,12 @@ namespace Ember {
 	
 		EVENT_CLASS_TYPE(WindowFocus);
 
-	}
+	};
 
 	class EM_API WindowLostFocus : public Event {
 	public:
 		WindowLostFocus() {}
 
 		EVENT_CLASS_TYPE(WindowLostFocus);
-	}
+	};
 }

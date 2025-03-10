@@ -3,6 +3,8 @@
 
 #include "Ember/Core/Events/ApplicationEvent.h"
 #include "Ember/Core/Events/KeyEvent.h"
+#include "Ember/Core/Events/MouseEvent.h"
+
 
 
 namespace Ember {
@@ -55,6 +57,8 @@ namespace Ember {
 				WindowCloseEvent event;
 				data.EventCallback(event);
 			}
+
+			// Window Events
 			case SDL_WINDOWEVENT: {
 				switch (e.window.event) {
 
@@ -71,37 +75,63 @@ namespace Ember {
 					case SDL_WINDOWEVENT_MOVED: {
 						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
-						WindowMoveEvent(e.window.data1, e.window.data2);
-						data.EventCallBack(event);
+						WindowMoveEvent event(e.window.data1, e.window.data2);
+						data.EventCallback(event);
 					}
 					case SDL_WINDOWEVENT_FOCUS_GAINED: {
 						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 						WindowFocus event;
-						data.EventCallBack(event);
+						data.EventCallback(event);
 					}
 					case SDL_WINDOWEVENT_FOCUS_LOST: {
 						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 						WindowLostFocus event;
-						data.EventCallBack(event);
+						data.EventCallback(event);
 					}
 				}
 			}
-
+			
+			// Key Events
 			case (SDL_KEYDOWN): {
 				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 				KeyPressEvent event((int) e.key.keysym.sym, (int) e.key.keysym.scancode, (int) e.key.keysym.mod, e.key.repeat);
-				data.EventCallBack(event);
+				data.EventCallback(event);
 			}
 			case (SDL_KEYUP): {
 				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 				KeyReleaseEvent event((int) e.key.keysym.sym, (int) e.key.keysym.scancode, (int) e.key.keysym.mod);
-				data.EventCallBack(event);
+				data.EventCallback(event);
 			}
 
+			// Mouse Events
+			case (SDL_MOUSEBUTTONDOWN): {
+				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+				MouseButtonPressEvent event(e.button.button);
+				data.EventCallback(event);
+			}
+			case (SDL_MOUSEBUTTONUP): {
+				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+				MouseButtonReleaseEvent event(e.button.button);
+				data.EventCallback(event);
+			}
+			case (SDL_MOUSEMOTION): {
+				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+				MouseMove event(e.motion.x, e.motion.y);
+				data.EventCallback(event);
+			}
+			case (SDL_MOUSEWHEEL): {
+				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+				MouseScroll event(e.wheel.x, e.wheel.y);
+				data.EventCallback(event);
+			}
 			
 		}
 	}
