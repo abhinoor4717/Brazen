@@ -16,6 +16,13 @@ namespace Ember {
 
 		int GetWidth() { return m_Width; }
 		int GetHeight() { return m_Height; }
+		
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;
+			return ss.str();
+		}
 
 		EVENT_CLASS_TYPE(WindowResize);
 	private:

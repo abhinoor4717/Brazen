@@ -38,7 +38,7 @@ namespace Ember {
         std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyReleaseEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
+			ss << "KeyReleaseEvent: " << m_KeyCode;
 			return ss.str();
 		}
 

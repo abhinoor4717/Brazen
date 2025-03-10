@@ -41,7 +41,7 @@ namespace Ember {
 			s_SDLInitilized = true;
 		}
 
-		m_Window = SDL_CreateWindow("Ember", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_Data.Width, m_Data.Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+		m_Window = SDL_CreateWindow("Ember", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_Data.Width, m_Data.Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 		if (m_Window == nullptr) {
 			EM_CORE_CRITICAL("Window could not be initilized! SDL error: {0}", SDL_GetError());
 		}
@@ -56,12 +56,12 @@ namespace Ember {
 				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 				WindowCloseEvent event;
 				data.EventCallback(event);
+				break;
 			}
 
 			// Window Events
 			case SDL_WINDOWEVENT: {
 				switch (e.window.event) {
-
 					case SDL_WINDOWEVENT_RESIZED: {
 						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
@@ -70,41 +70,51 @@ namespace Ember {
 
 						WindowResizeEvent event(e.window.data1, e.window.data2);
 						data.EventCallback(event);
-
+						break;
 					}
 					case SDL_WINDOWEVENT_MOVED: {
 						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 						WindowMoveEvent event(e.window.data1, e.window.data2);
 						data.EventCallback(event);
+						break;
 					}
 					case SDL_WINDOWEVENT_FOCUS_GAINED: {
 						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 						WindowFocus event;
 						data.EventCallback(event);
+						break;
 					}
 					case SDL_WINDOWEVENT_FOCUS_LOST: {
 						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 						WindowLostFocus event;
 						data.EventCallback(event);
+						break;
 					}
 				}
+				break;
 			}
 			
 			// Key Events
 			case (SDL_KEYDOWN): {
+				if (e.key.keysym.sym == SDLK_UNKNOWN) break;
+
 				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 				KeyPressEvent event((int) e.key.keysym.sym, (int) e.key.keysym.scancode, (int) e.key.keysym.mod, e.key.repeat);
 				data.EventCallback(event);
+				break;
 			}
 			case (SDL_KEYUP): {
+				if (e.key.keysym.sym == SDLK_UNKNOWN) break;
+
 				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 				KeyReleaseEvent event((int) e.key.keysym.sym, (int) e.key.keysym.scancode, (int) e.key.keysym.mod);
 				data.EventCallback(event);
+				break;
 			}
 
 			// Mouse Events
@@ -113,24 +123,28 @@ namespace Ember {
 
 				MouseButtonPressEvent event(e.button.button);
 				data.EventCallback(event);
+				break;
 			}
 			case (SDL_MOUSEBUTTONUP): {
 				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 				MouseButtonReleaseEvent event(e.button.button);
 				data.EventCallback(event);
+				break;
 			}
 			case (SDL_MOUSEMOTION): {
 				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 				MouseMove event(e.motion.x, e.motion.y);
 				data.EventCallback(event);
+				break;
 			}
 			case (SDL_MOUSEWHEEL): {
 				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
 
 				MouseScroll event(e.wheel.x, e.wheel.y);
 				data.EventCallback(event);
+				break;
 			}
 			
 		}

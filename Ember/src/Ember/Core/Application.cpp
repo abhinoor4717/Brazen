@@ -1,6 +1,8 @@
 #include "empch.h"
 #include "Application.h"
 
+#include "Ember/Core/Events/EventFormatter.h"
+
 namespace Ember {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -26,6 +28,6 @@ namespace Ember {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-		EM_CORE_TRACE("{0}", e.ToString());
+		EM_CORE_TRACE("{0}", e);
 	}
 }
