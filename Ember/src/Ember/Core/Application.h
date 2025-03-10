@@ -2,6 +2,8 @@
 
 #include "Core.h"
 #include "Window.h"
+#include "Ember/Core/Events/Event.h"
+#include "Ember/Core/Events/ApplicationEvent.h"
 
 namespace Ember {
 	
@@ -11,7 +13,9 @@ namespace Ember {
 		virtual ~Application();
 
 		void Run();
-		void OnEvent();
+		void OnEvent(Event& e);
+
+		bool OnWindowClose(WindowCloseEvent& e);
 
 	private:
 		std::unique_ptr<Window> m_Window;

@@ -37,11 +37,12 @@ project "Ember"
 	}
 
 	libdirs {
-		"Ember/vendor/SDL2"
+		"Ember/vendor/SDL2/lib"
 	}
 
 	links {
-		"SDL2.dll",
+		"SDL2",
+		"SDL2main",
 		"gdi32"
 	}
 
@@ -92,12 +93,23 @@ project "Brazen"
 	includedirs
 	{
 		"Ember/vendor/spdlog/include",
+		"%{prj.name}/vendor/SDL2/include",
 		"Ember/src"
+	}
+
+	libdirs {
+		"Ember/vendor/SDL2/lib"
 	}
 
 	links
 	{
-		"Ember"
+		"Ember",
+		"SDL2",
+		"SDL2main"
+	}
+
+	postbuildcommands {
+		"{COPY} ../Ember/vendor/SDL2/SDL2.dll ../bin/" .. outputdir .. "/Brazen"
 	}
 
 	filter "system:windows"

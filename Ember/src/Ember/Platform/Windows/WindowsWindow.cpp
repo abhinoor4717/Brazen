@@ -2,6 +2,8 @@
 #include "WindowsWindow.h"
 
 #include "Ember/Core/Events/ApplicationEvent.h"
+#include "Ember/Core/Events/KeyEvent.h"
+
 
 namespace Ember {
 	static bool s_SDLInitilized = false;
@@ -37,7 +39,7 @@ namespace Ember {
 			s_SDLInitilized = true;
 		}
 
-		m_Window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_Data.Width, m_Data.Height, SDL_WINDOW_SHOWN);
+		m_Window = SDL_CreateWindow("Ember", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_Data.Width, m_Data.Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 		if (m_Window == nullptr) {
 			EM_CORE_CRITICAL("Window could not be initilized! SDL error: {0}", SDL_GetError());
 		}
@@ -46,11 +48,61 @@ namespace Ember {
 	}
 	
 	void WindowsWindow::ParseEvent(const SDL_Event& e) const{
-		if (e.type == SDL_QUIT) {
-			WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
-			WindowCloseEvent event;
-			data.EventCallback(event);
 
+		switch (e.type) {
+			case SDL_QUIT: {
+				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+				WindowCloseEvent event;
+				data.EventCallback(event);
+			}
+			case SDL_WINDOWEVENT: {
+				switch (e.window.event) {
+
+					case SDL_WINDOWEVENT_RESIZED: {
+						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+						data.Width = e.window.data1;
+						data.Height = e.window.data2;
+
+						WindowResizeEvent event(e.window.data1, e.window.data2);
+						data.EventCallback(event);
+
+					}
+					case SDL_WINDOWEVENT_MOVED: {
+						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+						WindowMoveEvent(e.window.data1, e.window.data2);
+						data.EventCallBack(event);
+					}
+					case SDL_WINDOWEVENT_FOCUS_GAINED: {
+						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+						WindowFocus event;
+						data.EventCallBack(event);
+					}
+					case SDL_WINDOWEVENT_FOCUS_LOST: {
+						WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+						WindowLostFocus event;
+						data.EventCallBack(event);
+					}
+				}
+			}
+
+			case (SDL_KEYDOWN): {
+				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+				KeyPressEvent event((int) e.key.keysym.sym, (int) e.key.keysym.scancode, (int) e.key.keysym.mod, e.key.repeat);
+				data.EventCallBack(event);
+			}
+			case (SDL_KEYUP): {
+				WindowData& data = *(WindowData*)SDL_GetWindowData(m_Window, "m_Data");
+
+				KeyReleaseEvent event((int) e.key.keysym.sym, (int) e.key.keysym.scancode, (int) e.key.keysym.mod);
+				data.EventCallBack(event);
+			}
+
+			
 		}
 	}
 

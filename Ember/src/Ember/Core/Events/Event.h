@@ -25,7 +25,7 @@ namespace Ember {
 		virtual std::string ToString() const { return GetName(); }
 
 	protected:
-		bool m_handled = false;
+		bool m_Handled = false;
 	};
 
 	class EventDispatcher
