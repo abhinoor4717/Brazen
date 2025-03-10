@@ -1,0 +1,15 @@
+# Directories
+.vs
+.vscode
+bin/
+bin-int/
+Makefile
+
+
+# Files
+*.sln
+*.user
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+nul)
