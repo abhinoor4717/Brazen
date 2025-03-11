@@ -2,8 +2,6 @@
 #include "Layer.h"
 
 #include "Ember/Core/Events/EventFormatter.h"
-#include "Ember/Core/Events/Event.h"
-#include "Ember/Core/Events/KeyEvent.h"
 
 namespace Ember {
 
@@ -18,6 +16,6 @@ namespace Ember {
 	}
 
 	void Layer::OnUpdate(Renderer& renderer) {
-		renderer.FillScreen({ 28, 135, 230, 255 });
+		renderer.FillScreen({ 0,0,0,0 });
 	}
 }

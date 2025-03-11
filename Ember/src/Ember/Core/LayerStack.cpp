@@ -1,5 +1,6 @@
 #include "empch.h"
 #include "LayerStack.h"
+#include "Ember/Core/Events/EventFormatter.h"
 
 namespace Ember {
 	LayerStack::LayerStack() {

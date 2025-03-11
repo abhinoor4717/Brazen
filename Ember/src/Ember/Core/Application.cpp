@@ -11,6 +11,8 @@ namespace Ember {
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
+		m_LayerStack = std::make_shared<LayerStack>();
+
 		auto* window = static_cast<SDL_Window*>(GetWindow()->GetNativeWindow());
 		m_Renderer = std::shared_ptr<Renderer>(new Renderer(window));
 	}
@@ -21,7 +23,7 @@ namespace Ember {
 
 			m_Window->OnUpdate();
 
-			
+			m_LayerStack->OnUpdate(*m_Renderer);
 
 		}
 	}
@@ -36,6 +38,5 @@ namespace Ember {
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
 		m_LayerStack->OnEvent(e);
-		//EM_CORE_TRACE("{0}", e);
 	}
 }

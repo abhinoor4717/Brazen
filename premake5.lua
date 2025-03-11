@@ -32,47 +32,48 @@ project "Ember"
 	includedirs
 	{
 		"%{prj.name}/vendor/spdlog/include",
-		"Ember/vendor/SDL2/include",
-		"%{prj.name}/src/",
+		"%{prj.name}/vendor/SDL2/include",
+		"%{prj.name}/src",
 	}
 
+	
+	
 	filter "action:vs*"
 		libdirs { "Ember/vendor/SDL2/lib/msvc" }
 	filter "action:gmake*"
 		libdirs { "Ember/vendor/SDL2/lib/mingw" }
+		links { "mingw32" }
 
-	postbuildcommands {
-		"{MKDIR} ../bin/" .. outputdir .. "/Brazen",
-		"{COPY} ../bin/Debug-windows-x86_64/Ember/Ember.dll ../" .. outputdir .. "/Brazen"
-		-- "{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Brazen"
-	}
-
+	postbuildcommands
+		{
+			"{MKDIR} ../bin/" .. outputdir .. "/Brazen",
+			"{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Brazen"
+		}
 
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "off"
 		systemversion "latest"
-
+	
 		links {
-			"SDL2",
 			"SDL2main",
-			"gdi32"
+			"SDL2",
+			"gdi32",
+			"user32",
 		}
 
-		defines
-		{
+		defines {
 			"EM_PLATFORM_WINDOWS",
-			"EM_BUILD_DLL"
+			"EM_BUILD_DLL",
+			"SDL_MAIN_HANDLED"
 		}
 
 	filter "configurations:Debug"
 		defines "EM_DEBUG"
-		print("Debug mode")
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "EM_RELEASE"
-		print("Release mode")
 		optimize "On"
 
 	filter "configurations:Dist"
@@ -96,6 +97,7 @@ project "Brazen"
 	includedirs
 	{
 		"Ember/vendor/spdlog/include",
+		"%{prj.name}/vendor/SDL2/include",
 		"Ember/src"
 	}
 
@@ -105,9 +107,7 @@ project "Brazen"
 	}
 
 	postbuildcommands {
-		"{ECHO} Running brazen post build commands: abhinoor",
-		"{ECHO} was supposed to run %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Brazen",
-		"{COPY} %{wks.location}/Ember/vendor/SDL2/lib/SDL2.dll %{cfg.targetdir}",
+		"{COPY} ../Ember/vendor/SDL2/lib/SDL2.dll ../bin/" .. outputdir .. "/Brazen"
 	}
 
 	filter "system:windows"
@@ -117,7 +117,8 @@ project "Brazen"
 
 		defines
 		{
-			"EM_PLATFORM_WINDOWS"
+			"EM_PLATFORM_WINDOWS",
+			"SDL_MAIN_HANDLED"
 		}
 
 	filter "configurations:Debug"

@@ -5,7 +5,7 @@
 #include "Ember/Core/Events/Event.h"
 #include "Ember/Core/Events/ApplicationEvent.h"
 #include "Ember/Core/LayerStack.h"
-#include "Ember/Renderer/Renderer.h"
+// #include "Ember/Renderer/Renderer.h"
 
 namespace Ember {
 	

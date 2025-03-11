@@ -16,6 +16,7 @@ int main(int agrc, char** argv) {
 	app->Run();
 	delete app;
 
+	return 0;
 }
 
 #endif

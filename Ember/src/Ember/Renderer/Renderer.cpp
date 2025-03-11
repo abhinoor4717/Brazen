@@ -1,5 +1,5 @@
 #include "empch.h"
-#include "Renderer.h"
+#include "Ember/Renderer/Renderer.h"
 
 namespace Ember {
 	Renderer::Renderer(SDL_Window* window) {
@@ -13,6 +13,8 @@ namespace Ember {
 			EM_CORE_ERROR("Renderer could not be initilized!");
 			Renderer::~Renderer();
 		}
+
+		EM_CORE_TRACE("Renderer initilized");
 
 	}
 	Renderer::~Renderer() {};
