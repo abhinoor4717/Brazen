@@ -1,16 +1,13 @@
 workspace "Brazen"
 	architecture "x64"
 
-	configurations
-	{
+	configurations {
 		"Debug",
 		"Release",
 		"Dist"
 	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-
-IncludeDir = {}
 
 project "Ember"
 	location "Ember"
@@ -23,51 +20,47 @@ project "Ember"
 	pchheader "empch.h"
 	pchsource "Ember/src/empch.cpp"
 
-	files
-	{
+	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
-	includedirs
-	{
+	includedirs {
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/vendor/SDL2/include",
-		"%{prj.name}/src",
+		"%{prj.name}/src"
 	}
 
-	
-	
 	filter "action:vs*"
 		libdirs { "Ember/vendor/SDL2/lib/msvc" }
 	filter "action:gmake*"
 		libdirs { "Ember/vendor/SDL2/lib/mingw" }
 		links { "mingw32" }
-
-	postbuildcommands
-		{
-			"{MKDIR} ../bin/" .. outputdir .. "/Brazen",
-			"{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Brazen"
-		}
-
-	filter "system:windows"
+	
+		
+		filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "off"
 		systemversion "latest"
-	
+		
 		links {
 			"SDL2main",
 			"SDL2",
 			"gdi32",
 			"user32",
 		}
-
+		
 		defines {
 			"EM_PLATFORM_WINDOWS",
 			"EM_BUILD_DLL",
 			"SDL_MAIN_HANDLED"
 		}
-
+		
+		postbuildcommands {
+			("{MKDIR} ../bin/" .. outputdir .. "/Brazen"),
+			("{COPYFILE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Brazen/")
+		}
+		
 	filter "configurations:Debug"
 		defines "EM_DEBUG"
 		symbols "On"
@@ -88,26 +81,23 @@ project "Brazen"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files
-	{
+	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
-	includedirs
-	{
+	includedirs {
 		"Ember/vendor/spdlog/include",
-		"%{prj.name}/vendor/SDL2/include",
+		"Ember/vendor/SDL2/include",
 		"Ember/src"
 	}
 
-	links
-	{
+	links {
 		"Ember",
 	}
 
 	postbuildcommands {
-		"{COPY} ../Ember/vendor/SDL2/lib/SDL2.dll ../bin/" .. outputdir .. "/Brazen"
+		"{COPYFILE} ../Ember/vendor/SDL2/lib/SDL2.dll ../bin/" .. outputdir .. "/Brazen"
 	}
 
 	filter "system:windows"
@@ -115,8 +105,7 @@ project "Brazen"
 		staticruntime "off"
 		systemversion "latest"
 
-		defines
-		{
+		defines {
 			"EM_PLATFORM_WINDOWS",
 			"SDL_MAIN_HANDLED"
 		}
