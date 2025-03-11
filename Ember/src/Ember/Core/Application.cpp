@@ -15,7 +15,9 @@ namespace Ember {
 
 	void Application::Run() {
 		while (m_Running) {
-			m_Window->OnUpdate(); 
+
+			m_Window->OnUpdate();
+
 		}
 	}
 
@@ -28,6 +30,7 @@ namespace Ember {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-		EM_CORE_TRACE("{0}", e);
+		m_LayerStack.OnEvent(e);
+		//EM_CORE_TRACE("{0}", e);
 	}
 }

@@ -36,27 +36,28 @@ project "Ember"
 		"%{prj.name}/src",
 	}
 
-	libdirs {
-		"Ember/vendor/SDL2/lib"
+	filter "action:vs*"
+		libdirs { "Ember/vendor/SDL2/lib/msvc" }
+	filter "action:gmake*"
+		libdirs { "Ember/vendor/SDL2/lib/mingw" }
+
+	postbuildcommands {
+		"{MKDIR} ../bin/" .. outputdir .. "/Brazen",
+		"{COPY} ../bin/Debug-windows-x86_64/Ember/Ember.dll ../" .. outputdir .. "/Brazen"
+		-- "{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Brazen"
 	}
 
-	links {
-		"SDL2",
-		"SDL2main",
-		"gdi32"
-	}
-
-	postbuildcommands
-		{
-			"{MKDIR} ../bin/" .. outputdir .. "/Brazen",
-			"{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Brazen"
-		}
 
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "off"
 		systemversion "latest"
-		-- linkoptions { "/NODEFAULTLIB:LIBCMTD.lib", "/NODEFAULTLIB:msvcprtd.lib" }
+
+		links {
+			"SDL2",
+			"SDL2main",
+			"gdi32"
+		}
 
 		defines
 		{
@@ -66,10 +67,12 @@ project "Ember"
 
 	filter "configurations:Debug"
 		defines "EM_DEBUG"
+		print("Debug mode")
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "EM_RELEASE"
+		print("Release mode")
 		optimize "On"
 
 	filter "configurations:Dist"
@@ -93,23 +96,18 @@ project "Brazen"
 	includedirs
 	{
 		"Ember/vendor/spdlog/include",
-		"%{prj.name}/vendor/SDL2/include",
 		"Ember/src"
-	}
-
-	libdirs {
-		"Ember/vendor/SDL2/lib"
 	}
 
 	links
 	{
 		"Ember",
-		"SDL2",
-		"SDL2main"
 	}
 
 	postbuildcommands {
-		"{COPY} ../Ember/vendor/SDL2/SDL2.dll ../bin/" .. outputdir .. "/Brazen"
+		"{ECHO} Running brazen post build commands: abhinoor",
+		"{ECHO} was supposed to run %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Brazen",
+		"{COPY} %{wks.location}/Ember/vendor/SDL2/lib/SDL2.dll %{cfg.targetdir}",
 	}
 
 	filter "system:windows"
