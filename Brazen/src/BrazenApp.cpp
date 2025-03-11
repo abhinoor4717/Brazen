@@ -14,14 +14,7 @@ public:
 class Brazen : public Ember::Application {
 public:
 	Brazen() {
-		Ember::LayerStack& ls = GetLayerStack();
-
-		TestLayer* tl = new TestLayer();
-
-		ls.PushBackLayer(tl);
-		ls.PopBackLayer(tl);
 		
-
 	}
 	~Brazen() {}
 };

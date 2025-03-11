@@ -2,6 +2,7 @@
 
 #include "Ember/Core/Core.h"
 #include "Ember/Core/Events/Event.h"
+#include "Ember/Renderer/Renderer.h"
 
 namespace Ember {
 	class EM_API Layer {
@@ -13,6 +14,7 @@ namespace Ember {
 		inline std::string GetName() { return m_Name; }
 
 		virtual void EventHandler(Event& e);
+		virtual void OnUpdate(Renderer& renderer);
 	private:
 		const std::string m_Name;
 	};

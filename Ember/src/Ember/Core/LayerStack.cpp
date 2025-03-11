@@ -29,4 +29,11 @@ namespace Ember {
 				layer->OnEvent(e);
 		}
 	}
+
+	void LayerStack::OnUpdate(Renderer& renderer) {
+		for (auto layer : m_LayerStack) {
+			layer->OnUpdate(renderer);
+			renderer.Update();
+		}
+	}
 }

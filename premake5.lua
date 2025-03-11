@@ -32,8 +32,8 @@ project "Ember"
 	includedirs
 	{
 		"%{prj.name}/vendor/spdlog/include",
-		"%{prj.name}/vendor/SDL2/include",
-		"%{prj.name}/src",
+		"Ember/vendor/SDL2/include",
+		"%{prj.name}/src/",
 	}
 
 	filter "action:vs*"

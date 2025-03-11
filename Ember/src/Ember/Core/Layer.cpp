@@ -16,4 +16,8 @@ namespace Ember {
 	void Layer::EventHandler(Event& e) {
 		EM_INFO("Layer \"{0}\" recieved {1}", m_Name, e);
 	}
+
+	void Layer::OnUpdate(Renderer& renderer) {
+		renderer.FillScreen({ 28, 135, 230, 255 });
+	}
 }
