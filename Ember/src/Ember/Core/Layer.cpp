@@ -16,6 +16,6 @@ namespace Ember {
 	}
 
 	void Layer::OnUpdate(Renderer& renderer) {
-		renderer.FillScreen({ 0,0,0,0 });
+		renderer.FillScreen();
 	}
 }

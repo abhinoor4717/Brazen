@@ -34,7 +34,8 @@ namespace Ember {
 	void LayerStack::OnUpdate(Renderer& renderer) {
 		for (auto layer : m_LayerStack) {
 			layer->OnUpdate(renderer);
-			renderer.Update();
 		}
+		renderer.Update();
+		renderer.FillScreen();
 	}
 }

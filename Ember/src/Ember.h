@@ -11,3 +11,5 @@
 #include "Ember/Core/Events/MouseEvent.h"
 #include "Ember/Core/Events/ApplicationEvent.h"
 #include "Ember/Core/Events/EventFormatter.h"
+
+#include "Ember/Renderer/Renderer.h"
