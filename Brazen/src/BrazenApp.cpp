@@ -30,13 +30,15 @@ public:
 
 private:
 	Ember::Renderer& m_Renderer = Ember::Application::GetApplication().GetRenderer();;
-	FRect m_Rect{ 0,0,10,10 };
-	int m_RectSpeed = 100;
+	FRect m_Rect{ 10,0,10,10 };
+	int m_RectSpeed = 500;
 };
 	
 class Brazen : public Ember::Application {
 public:
 	Brazen() {
+
+		Ember::Application::GetApplication().GetRenderer().GetCamera().SetPosition({10,5});
 
 		auto ls = GetLayerStack();
 		ls->PopLayer();

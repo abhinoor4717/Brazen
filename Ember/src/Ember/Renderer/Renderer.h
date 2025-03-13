@@ -3,6 +3,7 @@
 #include "SDL2/SDL.h"
 #include "Ember/Core/Core.h"
 #include "Ember/Util/RendererUtil.h"
+#include "Ember/Renderer/Camera.h"
 
 namespace Ember {
 
@@ -13,6 +14,8 @@ namespace Ember {
 	public:
 		Renderer(SDL_Window* window);
 		~Renderer();
+
+		Camera& GetCamera() { return m_Camera; }
 
 		void FillScreen();
 		void FillScreen(const Color& color);
@@ -46,10 +49,20 @@ namespace Ember {
 		void SetDrawColor(const Color& color);
 		void Update();
 
+		void _DrawPoint(const Point& point);
+		void _DrawPoint(const FPoint& point);
+
+		void _DrawLine(const Line& line);
+		void _DrawLine(const FLine& line);
+
+		void _DrawRect(const Rect& rect, bool filled);
+		void _DrawRect(const FRect& rect, bool filled);
+
 		void _DrawCircle(const Circle& circle, bool filled);
 		void _DrawCircle(const FCircle& circle, bool filled);
 		
 	private:
 		SDL_Renderer* m_Renderer;
+		Camera m_Camera;
 	};
 }

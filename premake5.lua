@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 workspace "Brazen"
 	architecture "x64"
 
@@ -22,7 +23,9 @@ project "Ember"
 
 	files {
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		-- "Ember/src/Renderer/**.cpp",
+		-- "Ember/src/Renderer/**.h"
 	}
 
 	includedirs {

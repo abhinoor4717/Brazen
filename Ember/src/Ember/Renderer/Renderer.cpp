@@ -48,72 +48,97 @@ namespace Ember {
 		SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
 	}
 
+	void Renderer::_DrawPoint(const Point& point){
+		Vec2 translatedPos = GetCamera().TranslatePosition({point.x,point.y});
+		SDL_RenderDrawPoint(m_Renderer, translatedPos.x, translatedPos.y);
+	}
+	void Renderer::_DrawPoint(const FPoint& point){
+		Vec2 translatedPos = GetCamera().TranslatePosition({point.x,point.y});
+		SDL_RenderDrawPoint(m_Renderer, translatedPos.x, translatedPos.y);
+	}
 
 	void Renderer::DrawPoint(const Point& point) {
 		SetDrawColor();
-		SDL_RenderDrawPoint(m_Renderer, point.x, point.y);
+		_DrawPoint(point);
 	}
 	void Renderer::DrawPoint(const Point& point, const Color& color) {
 		SetDrawColor(color);
-		SDL_RenderDrawPoint(m_Renderer, point.x, point.y);
+		_DrawPoint(point);
 	}
 	void Renderer::DrawPoint(const FPoint& point) {
 		SetDrawColor();
-		SDL_RenderDrawPointF(m_Renderer, point.x, point.y);
+		_DrawPoint(point);
 	}
 	void Renderer::DrawPoint(const FPoint& point, const Color& color) {
 		SetDrawColor(color);
-		SDL_RenderDrawPointF(m_Renderer, point.x, point.y);
+		_DrawPoint(point);
+	}
+
+	void Renderer::_DrawLine(const Line& line) {
+		Vec2 translatedStartPoint = GetCamera().TranslatePosition({line.start.x, line.start.y});
+		Vec2 translatedEndPoint = GetCamera().TranslatePosition({line.end.x, line.end.y});
+
+		SDL_RenderDrawLine(m_Renderer, translatedStartPoint.x, translatedStartPoint.y, translatedEndPoint.x, translatedEndPoint.y);
+	}
+	void Renderer::_DrawLine(const FLine& line) {
+		Vec2 translatedStartPoint = GetCamera().TranslatePosition({line.start.x, line.start.y});
+		Vec2 translatedEndPoint = GetCamera().TranslatePosition({line.end.x, line.end.y});
+
+		SDL_RenderDrawLineF(m_Renderer, translatedStartPoint.x, translatedStartPoint.y, translatedEndPoint.x, translatedEndPoint.y);
 	}
 
 	void Renderer::DrawLine(const Line& line) {
 		SetDrawColor();
-		SDL_RenderDrawLine(m_Renderer, line.start.x, line.start.y, line.end.x, line.end.y);
+		_DrawLine(line);
 	}
 	void Renderer::DrawLine(const Line& line, const Color& color) {
 		SetDrawColor(color);
-		SDL_RenderDrawLine(m_Renderer, line.start.x, line.start.y, line.end.x, line.end.y);
+		_DrawLine(line);
 	}
 	void Renderer::DrawLine(const FLine& line) {
 		SetDrawColor();
-		SDL_RenderDrawLineF(m_Renderer, line.start.x, line.start.y, line.end.x, line.end.y);
+		_DrawLine(line);
 	}
 	void Renderer::DrawLine(const FLine& line, const Color& color) {
 		SetDrawColor(color);
-		SDL_RenderDrawLineF(m_Renderer, line.start.x, line.start.y, line.end.x, line.end.y);
+		_DrawLine(line);
+	}
+
+	void Renderer::_DrawRect(const Rect& rect, bool filled) {
+		Vec2 translatedPos = GetCamera().TranslatePosition({rect.pos.x, rect.pos.y});
+		Rect translatedRect = {translatedPos.x, translatedPos.y, rect.w, rect.h};
+		SDL_Rect tempRect = SDL_Rect(translatedRect);
+		if (filled)
+			SDL_RenderFillRect(m_Renderer, &tempRect);
+		else
+		SDL_RenderDrawRect(m_Renderer, &tempRect);
+	}
+	void Renderer::_DrawRect(const FRect& rect, bool filled) {
+		Vec2 translatedPos = GetCamera().TranslatePosition({rect.pos.x, rect.pos.y});
+		FRect translatedRect = {translatedPos.x, translatedPos.y, rect.w, rect.h};
+		SDL_FRect tempRect = SDL_FRect(translatedRect);
+		if (filled)
+			SDL_RenderFillRectF(m_Renderer, &tempRect);
+		else
+		SDL_RenderDrawRectF(m_Renderer, &tempRect);
+
 	}
 
 	void Renderer::DrawRect(const Rect& rect, bool filled) {
 		SetDrawColor();
-		SDL_Rect tempRect = SDL_Rect(rect);
-		if (filled)
-			SDL_RenderFillRect(m_Renderer, &tempRect);
-		else
-			SDL_RenderDrawRect(m_Renderer, &tempRect);
+		_DrawRect(rect, filled);
 	}
 	void Renderer::DrawRect(const Rect& rect, const Color& color, bool filled) {
 		SetDrawColor(color);
-		SDL_Rect tempRect = SDL_Rect(rect);
-		if (filled)
-			SDL_RenderFillRect(m_Renderer, &tempRect);
-		else
-			SDL_RenderDrawRect(m_Renderer, &tempRect);
+		_DrawRect(rect, filled);
 	}
 	void Renderer::DrawRect(const FRect& rect, bool filled) {
 		SetDrawColor();
-		SDL_FRect tempRect = SDL_FRect(rect);
-		if (filled)
-			SDL_RenderFillRectF(m_Renderer, &tempRect);
-		else
-			SDL_RenderDrawRectF(m_Renderer, &tempRect);
+		_DrawRect(rect, filled);
 	}
 	void Renderer::DrawRect(const FRect& rect, const Color& color, bool filled) {
 		SetDrawColor(color);
-		SDL_FRect tempRect = SDL_FRect(rect);
-		if (filled)
-			SDL_RenderFillRectF(m_Renderer, &tempRect);
-		else
-			SDL_RenderDrawRectF(m_Renderer, &tempRect);
+		_DrawRect(rect, filled);
 	}
 
 	void Renderer::_DrawCircle(const Circle& circle, bool filled) {
