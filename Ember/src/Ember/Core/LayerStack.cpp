@@ -1,6 +1,7 @@
 #include "empch.h"
 #include "LayerStack.h"
 #include "Ember/Core/Events/EventFormatter.h"
+#include "Ember/Core/Application.h"
 
 namespace Ember {
 	LayerStack::LayerStack() {
@@ -31,11 +32,10 @@ namespace Ember {
 		}
 	}
 
-	void LayerStack::OnUpdate(Renderer& renderer) {
+	void LayerStack::OnUpdate(Timestep timestep) {
 		for (auto layer : m_LayerStack) {
-			layer->OnUpdate(renderer);
+			layer->OnUpdate(timestep);
 		}
-		renderer.Update();
-		renderer.FillScreen();
+		Application::GetApplication().GetRenderer().Update();
 	}
 }

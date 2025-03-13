@@ -1,6 +1,7 @@
 #include "empch.h"
 #include "Layer.h"
 
+#include "Ember/Core/Application.h"
 #include "Ember/Core/Events/EventFormatter.h"
 
 namespace Ember {
@@ -15,7 +16,7 @@ namespace Ember {
 		EM_INFO("Layer \"{0}\" recieved {1}", m_Name, e);
 	}
 
-	void Layer::OnUpdate(Renderer& renderer) {
-		renderer.FillScreen();
+	void Layer::OnUpdate(Timestep timestep) {
+		Application::GetApplication().GetRenderer().FillScreen();
 	}
 }

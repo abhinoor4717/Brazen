@@ -2,7 +2,7 @@
 
 #include "SDL2/SDL.h"
 #include "Ember/Core/Core.h"
-#include "Ember/Renderer/Util.h"
+#include "Ember/Util/RendererUtil.h"
 
 namespace Ember {
 

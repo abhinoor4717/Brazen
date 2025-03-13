@@ -4,6 +4,7 @@
 #include "Ember/Core/Layer.h"
 #include "Ember/Core/Events/Event.h"
 #include "Ember/Renderer/Renderer.h"
+#include "Ember/Core/Timestep.h"
 
 namespace Ember {
 	class EM_API LayerStack {
@@ -15,7 +16,7 @@ namespace Ember {
 		void PopLayer();
 
 		void OnEvent(Event& e);
-		void OnUpdate(Renderer& renderer);
+		void OnUpdate(Timestep timestep);
 
 	private:
 		std::vector<Layer*> m_LayerStack;

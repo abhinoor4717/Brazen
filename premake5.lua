@@ -89,7 +89,7 @@ project "Brazen"
 	includedirs {
 		"Ember/vendor/spdlog/include",
 		"Ember/vendor/SDL2/include",
-		"Ember/src"
+		"Ember/src",
 	}
 
 	links {

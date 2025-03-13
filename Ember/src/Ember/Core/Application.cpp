@@ -2,14 +2,19 @@
 #include "Application.h"
 
 #include "Ember/Core/Events/EventFormatter.h"
+#include "Ember/Util/PlatformUtils.h"
 
 namespace Ember {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+	Application* Application::s_Application = nullptr;
+
 	Application::Application() {
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+		s_Application = this;
 
 		m_LayerStack = std::make_shared<LayerStack>();
 
@@ -21,9 +26,13 @@ namespace Ember {
 	void Application::Run() {
 		while (m_Running) {
 
-			m_Window->OnUpdate();
+			float time = Time::GetTime();
+			Timestep timestep = time - m_LastFrameTime;
+			m_LastFrameTime = time;
 
-			m_LayerStack->OnUpdate(*m_Renderer);
+			m_LayerStack->OnUpdate(timestep);
+
+			m_Window->OnUpdate();
 
 		}
 	}

@@ -25,7 +25,7 @@ struct Rect {
 	int w, h;
 
 	Rect(int x, int y, int width, int height)
-		: pos{x,y}, w(width), h(height) {}
+		: pos{ x,y }, w(width), h(height) {}
 
 	operator SDL_Rect() const {
 		return SDL_Rect{ pos.x, pos.y, w, h };
@@ -40,7 +40,7 @@ struct FRect {
 		: pos{ x,y }, w(width), h(height) {}
 
 	operator SDL_FRect() const {
-		return SDL_FRect{pos.x, pos.y, w, h};
+		return SDL_FRect{ pos.x, pos.y, w, h };
 	}
 };
 
@@ -49,7 +49,7 @@ struct Circle {
 	int radius;
 
 	Circle(int x, int y, int rad)
-		: center{x,y}, radius(rad) {}
+		: center{ x,y }, radius(rad) {}
 };
 
 struct FCircle {
