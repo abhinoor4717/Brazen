@@ -7,7 +7,7 @@ namespace Ember {
 	using KeyCode = int32_t;
 
 	namespace Key {
-		enum EM_API : KeyCode {
+		enum : KeyCode {
             Space = SDLK_SPACE,
             Apostrophe = SDLK_QUOTE,    /* ' */
             Comma = SDLK_COMMA,    /* , */

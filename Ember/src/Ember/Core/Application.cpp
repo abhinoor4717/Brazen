@@ -24,10 +24,11 @@ namespace Ember {
 	Application::~Application() {}
 
 	void Application::Run() {
+
 		while (m_Running) {
 
-			float time = Time::GetTime();
-			Timestep timestep = time - m_LastFrameTime;
+			auto time = Time::GetTime();
+			Timestep timestep = (float)((time - m_LastFrameTime)*1000 / (double)SDL_GetPerformanceFrequency() );
 			m_LastFrameTime = time;
 
 			m_LayerStack->OnUpdate(timestep);

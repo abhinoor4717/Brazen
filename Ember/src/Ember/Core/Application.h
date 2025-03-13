@@ -28,7 +28,7 @@ namespace Ember {
 
 	private:
 		bool m_Running = true;
-		float m_LastFrameTime = 0.0f;
+		Uint64 m_LastFrameTime = 0;
 
 		static Application* s_Application;
 

@@ -85,31 +85,35 @@ namespace Ember {
 
 	void Renderer::DrawRect(const Rect& rect, bool filled) {
 		SetDrawColor();
+		SDL_Rect tempRect = SDL_Rect(rect);
 		if (filled)
-			SDL_RenderFillRect(m_Renderer, &SDL_Rect(rect));
+			SDL_RenderFillRect(m_Renderer, &tempRect);
 		else
-			SDL_RenderDrawRect(m_Renderer, &SDL_Rect(rect));
+			SDL_RenderDrawRect(m_Renderer, &tempRect);
 	}
 	void Renderer::DrawRect(const Rect& rect, const Color& color, bool filled) {
 		SetDrawColor(color);
+		SDL_Rect tempRect = SDL_Rect(rect);
 		if (filled)
-			SDL_RenderFillRect(m_Renderer, &SDL_Rect(rect));
+			SDL_RenderFillRect(m_Renderer, &tempRect);
 		else
-			SDL_RenderDrawRect(m_Renderer, &SDL_Rect(rect));
+			SDL_RenderDrawRect(m_Renderer, &tempRect);
 	}
 	void Renderer::DrawRect(const FRect& rect, bool filled) {
 		SetDrawColor();
+		SDL_FRect tempRect = SDL_FRect(rect);
 		if (filled)
-			SDL_RenderFillRectF(m_Renderer, &SDL_FRect(rect));
+			SDL_RenderFillRectF(m_Renderer, &tempRect);
 		else
-			SDL_RenderDrawRectF(m_Renderer, &SDL_FRect(rect));
+			SDL_RenderDrawRectF(m_Renderer, &tempRect);
 	}
 	void Renderer::DrawRect(const FRect& rect, const Color& color, bool filled) {
 		SetDrawColor(color);
+		SDL_FRect tempRect = SDL_FRect(rect);
 		if (filled)
-			SDL_RenderFillRectF(m_Renderer, &SDL_FRect(rect));
+			SDL_RenderFillRectF(m_Renderer, &tempRect);
 		else
-			SDL_RenderDrawRectF(m_Renderer, &SDL_FRect(rect));
+			SDL_RenderDrawRectF(m_Renderer, &tempRect);
 	}
 
 	void Renderer::_DrawCircle(const Circle& circle, bool filled) {

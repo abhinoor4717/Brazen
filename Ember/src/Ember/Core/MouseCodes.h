@@ -7,7 +7,7 @@ namespace Ember {
 	using MouseCode = uint8_t; // SDL uses uint8_t for mouse buttons
 
 	namespace Mouse {
-		enum EM_API : MouseCode{
+		enum : MouseCode{
 			Button0 = SDL_BUTTON_LEFT,
 			Button1 = SDL_BUTTON_MIDDLE,
 			Button2 = SDL_BUTTON_RIGHT,

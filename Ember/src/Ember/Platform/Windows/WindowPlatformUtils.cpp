@@ -3,8 +3,7 @@
 #include "Ember/Util/PlatformUtils.h"
 
 namespace Ember {
-	float Time::GetTime() {
-		//return SDL_GetPerformanceCounter() / SDL_GetPerformanceFrequency();
-		return SDL_GetTicks();
+	Uint64 Time::GetTime() {
+		return SDL_GetPerformanceCounter();
 	}
 }

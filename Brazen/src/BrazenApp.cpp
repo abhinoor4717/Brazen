@@ -20,8 +20,7 @@ public:
 
 	void OnUpdate(Ember::Timestep timestep) override {
 		if (Ember::Input::IsKeyPressed(Ember::Key::Right)) {
-			EM_TRACE("{0}", timestep.GetMilliseconds());
-			m_Rect.pos.x += m_RectSpeed * timestep.GetSeconds()+1;
+			m_Rect.pos.x += m_RectSpeed * timestep;
 		}
 		if (m_Rect.pos.x >= 1280)
 			m_Rect.pos.x = 0;
@@ -32,7 +31,7 @@ public:
 private:
 	Ember::Renderer& m_Renderer = Ember::Application::GetApplication().GetRenderer();;
 	FRect m_Rect{ 0,0,10,10 };
-	int m_RectSpeed = 1;
+	int m_RectSpeed = 100;
 };
 	
 class Brazen : public Ember::Application {
