@@ -2,24 +2,27 @@
 #include "Ember/Renderer/Renderer.h"
 
 namespace Ember {
-	Renderer::Renderer(SDL_Window* window) {
+
+	int Renderer::m_RenderCount = 0;
+	Camera* Renderer::m_Camera;
+	SDL_Renderer* Renderer::m_Renderer;
+
+	void Renderer::Init(SDL_Window* window) {
 		if (window == nullptr) {
 			EM_CORE_ERROR("Renderer window is null!");
-			Renderer::~Renderer();
+			return;
 		}
 
 		m_Renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 		if (m_Renderer == nullptr) {
 			EM_CORE_ERROR("Renderer could not be initilized!");
-			Renderer::~Renderer();
+			return;
 		}
 
 		EM_CORE_TRACE("Renderer initilized");
 
+		m_RenderCount = 0;
 	}
-	Renderer::~Renderer() {
-		SDL_DestroyRenderer(m_Renderer);
-	};
 
 	void Renderer::OnWindowResize(int w, int h) {
 		m_Camera->SetViewport(w, h);
@@ -295,7 +298,7 @@ namespace Ember {
 	}
 
 	void Renderer::RenderGrid() {
-		int cellSize = 50;
+		int cellSize = 100;
 
 		Vec2 camPos = GetCamera().GetPosition();
 		int screenWidth = GetCamera().GetWidth();

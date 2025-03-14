@@ -17,6 +17,6 @@ namespace Ember {
 	}
 
 	void Layer::OnUpdate(Timestep timestep) {
-		Application::GetApplication().GetRenderer().FillScreen();
+		Renderer::FillScreen();
 	}
 }

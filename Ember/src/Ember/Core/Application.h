@@ -7,6 +7,7 @@
 #include "Ember/Core/LayerStack.h"
 #include "Ember/Renderer/Renderer.h"
 #include "Ember/Core/Timestep.h"
+#include "Ember/Scene/Scene.h"
 
 namespace Ember {
 	
@@ -22,7 +23,6 @@ namespace Ember {
 		bool OnWindowResize(WindowResizeEvent& e);
 
 		Window* GetWindow() { return m_Window.get(); }
-		Renderer& GetRenderer() { return *m_Renderer; }
 		static Application& GetApplication() { return *s_Application; }
 		
 		inline std::shared_ptr<LayerStack> GetLayerStack() { return m_LayerStack; }
@@ -36,7 +36,7 @@ namespace Ember {
 
 		std::unique_ptr<Window> m_Window;
 		std::shared_ptr<LayerStack> m_LayerStack;
-		std::shared_ptr<Renderer> m_Renderer;
+		std::vector<Scene*> m_Scenes;
 	};
 
 	// To be defined in CLIENT

@@ -36,6 +36,6 @@ namespace Ember {
 		for (auto layer : m_LayerStack) {
 			layer->OnUpdate(timestep);
 		}
-		Application::GetApplication().GetRenderer().Update();
+		Renderer::Update();
 	}
 }

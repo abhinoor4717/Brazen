@@ -19,9 +19,9 @@ namespace Ember {
 		m_LayerStack = std::make_shared<LayerStack>();
 
 		auto* window = static_cast<SDL_Window*>(GetWindow()->GetNativeWindow());
-		m_Renderer = std::shared_ptr<Renderer>(new Renderer(window));
 
-		m_Renderer->InitCamera(GetWindow()->GetWidth(), GetWindow()->GetHeight());
+		Renderer::Init(window);
+		Renderer::InitCamera(GetWindow()->GetWidth(), GetWindow()->GetHeight());
 	}
 	Application::~Application() {}
 
@@ -32,6 +32,7 @@ namespace Ember {
 			auto time = Time::GetTime();
 			Timestep timestep = (float)((time - m_LastFrameTime)*1000 / (double)SDL_GetPerformanceFrequency() );
 			m_LastFrameTime = time;
+			// EM_CORE_TRACE("FPS: {0}", 1000 / timestep.GetMilliseconds());
 
 			m_LayerStack->OnUpdate(timestep);
 
@@ -47,7 +48,7 @@ namespace Ember {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e) {
 		EM_TRACE("{0}", e.ToString());
-		GetRenderer().OnWindowResize(e.GetWidth(), e.GetHeight());
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 		return false;
 	}
 

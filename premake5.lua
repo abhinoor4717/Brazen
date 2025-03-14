@@ -1,126 +1,76 @@
----@diagnostic disable: undefined-global
-workspace "Brazen"
-	architecture "x64"
-
-	configurations {
-		"Debug",
-		"Release",
-		"Dist"
-	}
-
-outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-
-project "Ember"
-	location "Ember"
-	kind "SharedLib"
-	language "C++"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	pchheader "empch.h"
-	pchsource "Ember/src/empch.cpp"
-
-	files {
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp",
-		-- "Ember/src/Renderer/**.cpp",
-		-- "Ember/src/Renderer/**.h"
-	}
-
-	includedirs {
-		"%{prj.name}/vendor/spdlog/include",
-		"%{prj.name}/vendor/SDL2/include",
-		"%{prj.name}/src"
-	}
-
-	filter "action:vs*"
-		libdirs { "Ember/vendor/SDL2/lib/msvc" }
-	filter "action:gmake*"
-		libdirs { "Ember/vendor/SDL2/lib/mingw" }
-		links { "mingw32" }
-	
-		
-		filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "off"
-		systemversion "latest"
-		
-		links {
-			"SDL2main",
-			"SDL2",
-			"gdi32",
-			"user32",
-		}
-		
-		defines {
-			"EM_PLATFORM_WINDOWS",
-			"EM_BUILD_DLL",
-			"SDL_MAIN_HANDLED"
-		}
-		
-		postbuildcommands {
-			("{MKDIR} ../bin/" .. outputdir .. "/Brazen"),
-			("{COPYFILE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Brazen/")
-		}
-		
-	filter "configurations:Debug"
-		defines "EM_DEBUG"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "EM_RELEASE"
-		optimize "On"
-
-	filter "configurations:Dist"
-		defines "EM_DIST"
-		optimize "On"
-
-project "Brazen"
-	location "Brazen"
-	kind "ConsoleApp"
-	language "C++"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files {
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs {
-		"Ember/vendor/spdlog/include",
-		"Ember/vendor/SDL2/include",
-		"Ember/src",
-	}
-
-	links {
-		"Ember",
-	}
-
-	postbuildcommands {
-		"{COPYFILE} ../Ember/vendor/SDL2/lib/SDL2.dll ../bin/" .. outputdir .. "/Brazen"
-	}
-
-	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "off"
-		systemversion "latest"
-
-		defines {
+{
+	"c_cpp_properties.json": {
+	  "configurations": [
+		{
+		  "name": "Windows",
+		  "includePath": [
+			"${workspaceFolder}/Ember/src",
+			"${workspaceFolder}/Ember/vendor/spdlog/include",
+			"${workspaceFolder}/Ember/vendor/SDL2/include"
+		  ],
+		  "defines": [
 			"EM_PLATFORM_WINDOWS",
 			"SDL_MAIN_HANDLED"
+		  ],
+		  "compilerPath": "C:/MinGW-64/bin/g++.exe",
+		  "cStandard": "c17",
+		  "cppStandard": "c++17",
+		  "intelliSenseMode": "windows-gcc-x64"
 		}
-
-	filter "configurations:Debug"
-		defines "EM_DEBUG"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "EM_RELEASE"
-		optimize "On"
-
-	filter "configurations:Dist"
-		defines "EM_DIST"
-		optimize "On"
+	  ],
+	  "version": 4
+	},
+  
+	"tasks.json": {
+	  "version": "2.0.0",
+	  "tasks": [
+		{
+		  "label": "Build Brazen",
+		  "type": "shell",
+		  "command": "g++",
+		  "args": [
+			"-IEmber/src",
+			"-IEmber/vendor/spdlog/include",
+			"-IEmber/vendor/SDL2/include",
+			"-LEmber/vendor/SDL2/lib/mingw",
+			"-o", "bin/Debug-windows-x64/Brazen/Brazen.exe",
+			"Brazen/src/*.cpp",
+			"-lSDL2main",
+			"-lSDL2",
+			"-lgdi32",
+			"-luser32"
+		  ],
+		  "group": {
+			"kind": "build",
+			"isDefault": true
+		  }
+		}
+	  ]
+	},
+  
+	"launch.json": {
+	  "version": "0.2.0",
+	  "configurations": [
+		{
+		  "name": "Launch Brazen",
+		  "type": "cppdbg",
+		  "request": "launch",
+		  "program": "${workspaceFolder}/bin/Debug-windows-x64/Brazen/Brazen.exe",
+		  "args": [],
+		  "stopAtEntry": false,
+		  "cwd": "${workspaceFolder}",
+		  "environment": [],
+		  "externalConsole": true,
+		  "MIMode": "gdb",
+		  "setupCommands": [
+			{
+			  "description": "Enable pretty-printing for gdb",
+			  "text": "-enable-pretty-printing",
+			  "ignoreFailures": true
+			}
+		  ]
+		}
+	  ]
+	}
+  }
+  
