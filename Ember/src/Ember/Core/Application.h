@@ -19,6 +19,7 @@ namespace Ember {
 		void OnEvent(Event& e);
 
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 		Window* GetWindow() { return m_Window.get(); }
 		Renderer& GetRenderer() { return *m_Renderer; }

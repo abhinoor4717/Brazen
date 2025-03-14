@@ -15,7 +15,10 @@ namespace Ember {
 		Renderer(SDL_Window* window);
 		~Renderer();
 
-		Camera& GetCamera() { return m_Camera; }
+		void OnWindowResize(int w, int h);
+
+		void InitCamera(int w, int h) { m_Camera = new Camera(w, h); }
+		Camera& GetCamera() { return *m_Camera; }
 
 		void FillScreen();
 		void FillScreen(const Color& color);
@@ -40,6 +43,9 @@ namespace Ember {
 		void DrawCircle(const FCircle& circle, bool filled);
 		void DrawCircle(const FCircle& circle, const Color& color, bool filled);
 
+		void RenderGrid();
+
+		int m_RenderCount=0;
 		
 	private:
 		void SetFillColor();
@@ -63,6 +69,6 @@ namespace Ember {
 		
 	private:
 		SDL_Renderer* m_Renderer;
-		Camera m_Camera;
+		Camera* m_Camera;
 	};
 }

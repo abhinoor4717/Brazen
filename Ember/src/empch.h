@@ -12,6 +12,9 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <cstdlib>
+#include <ctime>
+
 #include "Ember/Core/Log.h"
 
 #ifdef EM_PLATFORM_WINDOWS
