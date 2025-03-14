@@ -7,7 +7,7 @@ public:
 
 	void OnUpdate(Ember::Timestep timestep) override {
 		m_Renderer.FillScreen();
-		//m_Renderer.RenderGrid();
+		m_Renderer.RenderGrid();
 	}
 private:
 	Ember::Renderer& m_Renderer = Ember::Application::GetApplication().GetRenderer();;
@@ -20,9 +20,25 @@ public:
 	void EventHandler(Ember::Event& e) override {}
 
 	void OnUpdate(Ember::Timestep timestep) override {
-		auto& camera = Ember::Application::GetApplication().GetRenderer().GetCamera();
-		EM_TRACE("{0}, {1}", camera.GetWidth(), camera.GetHeight());
+		auto& cam = Ember::Application::GetApplication().GetRenderer().GetCamera();
+		//EM_TRACE("{0}, {1}", camera.GetWidth(), camera.GetHeight());
 		HandleInput(timestep);
+
+		m_Renderer.DrawRect(Rect{ 0,0,50,50 }, true);
+		m_Renderer.DrawRect(Rect{ 0,100,35,69 }, {130,130,200}, true);
+
+		Rect rect = { 1000,0,50,50 };
+
+		m_Renderer.DrawRect(rect, true);
+		m_Renderer.DrawRect(Rect{ 2000,0,50,50 }, true);
+		m_Renderer.DrawRect(Rect{ 3000,0,50,50 }, true);
+		m_Renderer.DrawRect(Rect{ 4000,0,50,50 }, true);
+		m_Renderer.DrawRect(Rect{ 5000,0,50,50 }, true);
+		m_Renderer.DrawRect(Rect{ 6000,0,50,50 }, true);
+		m_Renderer.DrawRect(Rect{ 7000,0,50,50 }, true);
+		m_Renderer.DrawRect(Rect{ 8000,0,50,50 }, true);
+		m_Renderer.DrawRect(Rect{ 9000,0,50,50 }, true);
+		m_Renderer.DrawRect(Rect{ 10000,0,50,50 }, true);
 
 		m_Renderer.DrawRect(m_Rect, true);
 
@@ -35,6 +51,10 @@ public:
 		m_Renderer.DrawRect(Rect{ -8000,0,50,50 }, true);
 		m_Renderer.DrawRect(Rect{ -9000,0,50,50 }, true);
 		m_Renderer.DrawRect(Rect{ -10000,0,50,50 }, true);
+		//EM_TRACE("{0}", (cam.IsWithinView(rect.TopLeft()) || cam.IsWithinView(rect.TopRight()) || cam.IsWithinView(rect.BottomRight()) || cam.IsWithinView(rect.BottomLeft())));
+		//EM_TRACE("Rect original pos: ({0}, {1})", rect.pos.x, rect.pos.y);
+		//EM_TRACE("Rect translated pos: ({0}, {1})", cam.TranslatePosition(rect.pos).x, cam.TranslatePosition(rect.pos).y);
+		EM_TRACE("Render Count: {0}", m_Renderer.m_RenderCount);
 
 		m_Renderer.m_RenderCount = 0;
 		

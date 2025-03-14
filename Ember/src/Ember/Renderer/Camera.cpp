@@ -17,12 +17,13 @@ namespace Ember {
         return {pos.x-m_Position.x, pos.y-m_Position.y};
     }
 
-    bool Camera::IsWithinView(Vec2 pos) {
+    bool Camera::IsWithinView(Vec2 worldPos) {
 
-        auto tp = TranslatePosition(pos);
+        auto screenPos = TranslatePosition(worldPos);
+        
+        return (screenPos.x >= 0 && screenPos.x <= m_Width
+            && screenPos.y >= 0 && screenPos.y <= m_Height);
 
-        return (tp.x >= m_Position.x && tp.x <= m_Width
-            && tp.y >= m_Position.y && tp.y <= m_Height);
     }
 
 }

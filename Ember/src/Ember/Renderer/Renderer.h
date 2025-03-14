@@ -66,6 +66,8 @@ namespace Ember {
 
 		void _DrawCircle(const Circle& circle, bool filled);
 		void _DrawCircle(const FCircle& circle, bool filled);
+
+		bool _IsCircleWithinView(Vec2 center, int radius);
 		
 	private:
 		SDL_Renderer* m_Renderer;

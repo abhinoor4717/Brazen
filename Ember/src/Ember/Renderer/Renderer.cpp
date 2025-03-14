@@ -54,11 +54,15 @@ namespace Ember {
 
 	void Renderer::_DrawPoint(const Point& point){
 		Vec2 translatedPos = GetCamera().TranslatePosition({(float) point.x, (float) point.y});
-		SDL_RenderDrawPoint(m_Renderer, translatedPos.x, translatedPos.y);
+		if (GetCamera().IsWithinView(point))
+			SDL_RenderDrawPoint(m_Renderer, translatedPos.x, translatedPos.y);
+		m_RenderCount++;
 	}
 	void Renderer::_DrawPoint(const FPoint& point){
 		Vec2 translatedPos = GetCamera().TranslatePosition({point.x, point.y});
-		SDL_RenderDrawPoint(m_Renderer, translatedPos.x, translatedPos.y);
+		if (GetCamera().IsWithinView(point))
+			SDL_RenderDrawPoint(m_Renderer, translatedPos.x, translatedPos.y);
+		m_RenderCount++;
 	}
 
 	void Renderer::DrawPoint(const Point& point) {
@@ -83,12 +87,14 @@ namespace Ember {
 		Vec2 translatedEndPoint = GetCamera().TranslatePosition({(float) line.end.x, (float) line.end.y});
 
 		SDL_RenderDrawLine(m_Renderer, translatedStartPoint.x, translatedStartPoint.y, translatedEndPoint.x, translatedEndPoint.y);
+		m_RenderCount++;
 	}
 	void Renderer::_DrawLine(const FLine& line) {
 		Vec2 translatedStartPoint = GetCamera().TranslatePosition({line.start.x, line.start.y});
 		Vec2 translatedEndPoint = GetCamera().TranslatePosition({line.end.x, line.end.y});
 
 		SDL_RenderDrawLineF(m_Renderer, translatedStartPoint.x, translatedStartPoint.y, translatedEndPoint.x, translatedEndPoint.y);
+		m_RenderCount++;
 	}
 
 	void Renderer::DrawLine(const Line& line) {
@@ -158,9 +164,29 @@ namespace Ember {
 		_DrawRect(rect, filled);
 	}
 
+	bool Renderer::_IsCircleWithinView(Vec2 center, int radius) {
+		auto& cam = GetCamera();
+
+		Vec2 screenCenter = cam.TranslatePosition(center);
+
+		float left = (float)(screenCenter.x - radius);
+		float right = (float)(screenCenter.x + radius);
+		float top = (float)(screenCenter.y - radius);
+		float bottom = (float)(screenCenter.y + radius);
+
+		return (cam.IsWithinView({ left, top }) || cam.IsWithinView({ right, top }) ||
+			cam.IsWithinView({ left, bottom }) || cam.IsWithinView({ right, bottom }));
+	}
+
 	void Renderer::_DrawCircle(const Circle& circle, bool filled) {
-		int centerX = circle.center.x;
-		int centerY = circle.center.y;
+		auto& cam = GetCamera();
+
+		if (_IsCircleWithinView(circle.center, circle.radius))
+			return;
+
+		Vec2 translatedCenter = cam.TranslatePosition(circle.center);
+		int centerX = translatedCenter.x;
+		int centerY = translatedCenter.y;
 		int x = circle.radius, y = 0;
 		int err = 0;
 
@@ -168,7 +194,6 @@ namespace Ember {
 			while (x >= y) {
 				SDL_RenderDrawLine(m_Renderer, centerX - x, centerY + y, centerX + x, centerY + y);
 				SDL_RenderDrawLine(m_Renderer, centerX - x, centerY - y, centerX + x, centerY - y);
-
 				SDL_RenderDrawLine(m_Renderer, centerX - y, centerY + x, centerX + y, centerY + x);
 				SDL_RenderDrawLine(m_Renderer, centerX - y, centerY - x, centerX + y, centerY - x);
 
@@ -199,11 +224,18 @@ namespace Ember {
 				}
 			}
 		}
+		m_RenderCount++;
 
 	}
 	void Renderer::_DrawCircle(const FCircle& circle, bool filled) {
-		float centerX = circle.center.x;
-		float centerY = circle.center.y;
+		auto& cam = GetCamera();
+
+		if (_IsCircleWithinView(circle.center, circle.radius))
+			return;
+
+		Vec2 translatedCenter = cam.TranslatePosition(circle.center);
+		float centerX = translatedCenter.x;
+		float centerY = translatedCenter.y;
 		float x = circle.radius, y = 0;
 		float err = 0;
 
@@ -242,6 +274,7 @@ namespace Ember {
 				}
 			}
 		}
+		m_RenderCount++;
 	}
 
 	void Renderer::DrawCircle(const Circle& circle, bool filled) {
@@ -262,12 +295,20 @@ namespace Ember {
 	}
 
 	void Renderer::RenderGrid() {
-		int WIDTH = 2000;
-		int HEIGHT = 2000;
 		int cellSize = 50;
 
-		for (int x = -WIDTH; x < WIDTH; x += cellSize) {
-			for (int y = -HEIGHT; y < HEIGHT; y += cellSize) {
+		Vec2 camPos = GetCamera().GetPosition();
+		int screenWidth = GetCamera().GetWidth();
+		int screenHeight = GetCamera().GetHeight();
+
+		// Compute the visible grid range
+		int startX = (((int)camPos.x / cellSize) * cellSize)-cellSize;
+		int startY = (((int)camPos.y / cellSize) * cellSize)-cellSize;
+		int endX = startX + screenWidth + cellSize;
+		int endY = startY + screenHeight + cellSize;
+
+		for (int x = startX; x < endX; x += cellSize) {
+			for (int y = startY; y < endY; y += cellSize) {
 				DrawRect(Rect{ x, y, cellSize, cellSize }, false);
 			}
 		}
